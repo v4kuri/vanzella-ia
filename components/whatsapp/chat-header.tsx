@@ -19,7 +19,7 @@ export function ChatHeader({ isTyping }: ChatHeaderProps) {
       </button>
 
       <img
-        src="/images/vanzella-logo.jpg"
+        src="/images/vanzella-logo.png"
         alt="Foto de perfil de Vanzella IA"
         className="h-10 w-10 rounded-full object-cover bg-white"
       />

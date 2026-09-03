@@ -13,7 +13,7 @@ export function SplashScreen({ hiding }: { hiding: boolean }) {
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <div className="splash-avatar overflow-hidden rounded-full shadow-2xl ring-4 ring-white/30">
           <img
-            src="/images/vanzella-logo.jpg"
+            src="/images/vanzella-logo.png"
             alt="Logo Vanzella Viagens e Turismo"
             className="h-28 w-28 object-cover bg-white"
           />
