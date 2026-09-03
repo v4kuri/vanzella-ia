@@ -13,13 +13,13 @@ export function SplashScreen({ hiding }: { hiding: boolean }) {
       <div className="flex flex-1 flex-col items-center justify-center gap-4">
         <div className="splash-avatar overflow-hidden rounded-full shadow-2xl ring-4 ring-white/30">
           <img
-            src="/images/moti-logo.jpeg"
-            alt="Logo MotiVitae"
-            className="h-28 w-28 object-cover"
+            src="/images/vanzella-logo.jpg"
+            alt="Logo Vanzella Viagens e Turismo"
+            className="h-28 w-28 object-cover bg-white"
           />
         </div>
         <div className="splash-title flex items-center gap-1.5">
-          <span className="text-2xl font-semibold text-white">Moti AI</span>
+          <span className="text-2xl font-semibold text-white">Vanzella IA</span>
           <VerifiedBadge className="h-5 w-5" />
         </div>
         <div className="splash-title flex items-center gap-2 text-white/80">
@@ -31,9 +31,9 @@ export function SplashScreen({ hiding }: { hiding: boolean }) {
 
       <div className="splash-title flex flex-col items-center gap-1">
         <span className="text-xs uppercase tracking-[0.25em] text-white/70">
-          MotiVitae
+          Vanzella
         </span>
-        <span className="text-[11px] text-white/60">Motivando Vidas</span>
+        <span className="text-[11px] text-white/60">Viagens e Turismo</span>
       </div>
 
       <style jsx>{`

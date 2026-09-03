@@ -19,14 +19,14 @@ export function ChatHeader({ isTyping }: ChatHeaderProps) {
       </button>
 
       <img
-        src="/images/moti-logo.jpeg"
-        alt="Foto de perfil de Moti AI"
-        className="h-10 w-10 rounded-full object-cover"
+        src="/images/vanzella-logo.jpg"
+        alt="Foto de perfil de Vanzella IA"
+        className="h-10 w-10 rounded-full object-cover bg-white"
       />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <span className="flex items-center gap-1 text-base font-medium leading-tight">
-          <span className="truncate">Moti AI</span>
+          <span className="truncate">Vanzella IA</span>
           <VerifiedBadge className="h-4 w-4 shrink-0" />
         </span>
         <span className="truncate text-xs leading-tight text-white/85">

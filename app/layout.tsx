@@ -3,8 +3,8 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Moti AI - WhatsApp',
-  description: 'Converse com a Moti AI da MotiVitae',
+  title: 'Vanzella IA - WhatsApp',
+  description: 'Converse com a Vanzella IA da Vanzella Viagens e Turismo',
   generator: 'v0.app',
   icons: {
     icon: '/favicon.png',

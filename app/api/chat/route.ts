@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 
 const N8N_WEBHOOK_URL =
-  "https://automacao.v4kuri.com.br/webhook/35487ad2-6cf9-4eb0-9918-86ddb77163b7/chat"
+  "https://automacao.v4kuri.com.br/webhook/a2a18084-89e1-4ca4-b2f8-f611b0a598f2/chat"
 
 export async function POST(request: Request) {
   try {
