@@ -81,10 +81,32 @@ Bonito é isso aqui:
 #FOTO:https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=600|Gruta do Lago Azul — Bonito, MS#
 ```
 
-- **URLs permitidas** (allowlist do front): `images.unsplash.com`,
-  `upload.wikimedia.org`, `commons.wikimedia.org`, e domínios da Vanzella
-  (`vanzella-transportes.vercel.app`, `vanzella.com.br`).
-- Nunca invente domínio.
+- **URLs permitidas** (allowlist do front):
+  - `images.unsplash.com`, `unsplash.com`, `source.unsplash.com`
+  - `upload.wikimedia.org`, `*.wikimedia.org`, `*.wikipedia.org`
+  - `*.pexels.com`, `*.pixabay.com`
+  - `res.cloudinary.com`, `i.imgur.com`, `*.githubusercontent.com`
+  - `*.vercel.app` (assets do próprio site Vanzella)
+  - `turismo.ms.gov.br`, `bonito.ms.gov.br`
+- **Nunca invente URL**. Use apenas URLs que você tem certeza que existem.
+  URL com photo-id inventado dá 404 e o front mostra "Foto indisponível".
+- Se não tiver certeza de uma URL válida, **não envie foto** — descreva o
+  destino em texto.
+
+### URLs de foto pré-validadas (use estas quando fizer sentido)
+
+- Bonito — Gruta do Lago Azul:
+  `https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=800`
+- Bonito — Rio Sucuri:
+  `https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800`
+- Pantanal:
+  `https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800`
+- Corumbá / Rio Paraguai:
+  `https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=800`
+- Campo Grande:
+  `https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Campo_Grande_MS.jpg/800px-Campo_Grande_MS.jpg`
+
+Prefira essas. Se precisar de outra, cheque antes de enviar.
 
 ### 4. Localização — `#LOCAL:nome|endereço|url_mapa#`
 

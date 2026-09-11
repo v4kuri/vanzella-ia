@@ -73,17 +73,35 @@ const CONTATO_RE = /#CONTATO:([^|#]+)\|([^|#]+)\|([^#]+)#/g
 const ENQUETE_RE = /#ENQUETE:([^|#]+)\|([^#]+)#/g
 
 const URL_ALLOWLIST: RegExp[] = [
+  // Vanzella
   /^https:\/\/([a-z0-9-]+\.)*vanzella-transportes\.vercel\.app(\/|$)/i,
   /^https:\/\/([a-z0-9-]+\.)*vanzella\.com\.br(\/|$)/i,
+  // WhatsApp
   /^https:\/\/wa\.me\//i,
   /^https:\/\/api\.whatsapp\.com\//i,
+  // Google Maps
   /^https:\/\/(www\.)?google\.com\/maps/i,
   /^https:\/\/maps\.google\.com\//i,
   /^https:\/\/maps\.app\.goo\.gl\//i,
   /^https:\/\/goo\.gl\/maps\//i,
-  /^https:\/\/images\.unsplash\.com\//i,
-  /^https:\/\/upload\.wikimedia\.org\//i,
-  /^https:\/\/commons\.wikimedia\.org\//i,
+  // Image CDNs (fotos de destinos)
+  /^https:\/\/([a-z0-9-]+\.)*unsplash\.com\//i,
+  /^https:\/\/source\.unsplash\.com\//i,
+  /^https:\/\/([a-z0-9-]+\.)*wikimedia\.org\//i,
+  /^https:\/\/([a-z0-9-]+\.)*wikipedia\.org\//i,
+  /^https:\/\/([a-z0-9-]+\.)*pexels\.com\//i,
+  /^https:\/\/([a-z0-9-]+\.)*pixabay\.com\//i,
+  /^https:\/\/res\.cloudinary\.com\//i,
+  /^https:\/\/i\.imgur\.com\//i,
+  /^https:\/\/([a-z0-9-]+\.)*githubusercontent\.com\//i,
+  /^https:\/\/lh3\.googleusercontent\.com\//i,
+  /^https:\/\/storage\.googleapis\.com\//i,
+  /^https:\/\/([a-z0-9-]+\.)*vercel\.app\//i,
+  /^https:\/\/([a-z0-9-]+\.)*vercel-storage\.com\//i,
+  // Turismo MS oficial
+  /^https:\/\/([a-z0-9-]+\.)*ms\.gov\.br\//i,
+  /^https:\/\/([a-z0-9-]+\.)*turismo\.ms\.gov\.br\//i,
+  /^https:\/\/([a-z0-9-]+\.)*bonito\.ms\.gov\.br\//i,
 ]
 
 interface InlineMatch {
