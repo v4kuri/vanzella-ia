@@ -160,8 +160,30 @@ export function WhatsAppChat() {
     [scheduleTimer]
   )
 
+  const handleReset = useCallback(() => {
+    timersRef.current.forEach((t) => clearTimeout(t))
+    timersRef.current.clear()
+    setMessages([])
+    setActiveQuickRepliesId(null)
+    setIsTyping(false)
+    if (typeof window !== "undefined") {
+      try {
+        window.localStorage.removeItem(STORAGE_KEY)
+        const fresh = newId()
+        window.localStorage.setItem(SESSION_KEY, fresh)
+        sessionIdRef.current = fresh
+      } catch {
+        sessionIdRef.current = newId()
+      }
+    }
+  }, [])
+
   const handleSend = useCallback(
     async (text: string) => {
+      if (text.trim().toLowerCase() === "/reset") {
+        handleReset()
+        return
+      }
       const userMessage: ChatMessage = {
         id: newId(),
         text,
@@ -228,7 +250,7 @@ export function WhatsAppChat() {
         setIsTyping(false)
       }
     },
-    [appendReplies, scheduleTimer]
+    [appendReplies, scheduleTimer, handleReset]
   )
 
   const handleQuickReply = useCallback(
@@ -250,7 +272,7 @@ export function WhatsAppChat() {
 
   return (
     <div className="flex h-full flex-col overflow-hidden bg-[#efeae2]">
-      <ChatHeader isTyping={isTyping} />
+      <ChatHeader isTyping={isTyping} onReset={handleReset} />
 
       <div
         ref={scrollRef}
