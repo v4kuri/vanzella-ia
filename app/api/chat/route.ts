@@ -10,7 +10,7 @@ const DEMOS: Record<string, string> = {
   saudacao:
     "Oi! Eu sou a Vane, da Vanzella. Como posso te ajudar?\n\n#BOTOES:Comprar passagem|Fretamento / grupo|Enviar encomenda#",
   card: "Encontrei essa saída pra vocês:\n\n#CARD:Campo Grande → Bonito|Segunda, 15 de setembro|Saída *10:00*;2 passageiros;A partir de *R$ 149* por pessoa|Escolher poltronas|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1000-2026-09-15/poltronas?passageiros=2&morador=0#\n\nSe quiser um horário mais tarde, me fala.",
-  foto: "Bonito é uma das joias do MS. Água transparente, cachoeira, gruta.\n\n#FOTO:https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=600|Gruta do Lago Azul — Bonito, MS#\n\nVocê tá pensando em ir quando?",
+  foto: "Bonito é uma das joias do MS. Água transparente, cachoeira, gruta.\n\n#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#\n\nVocê tá pensando em ir quando?",
   local:
     "O embarque é aqui:\n\n#LOCAL:Terminal Rodoviário de Campo Grande|Rua Vasconcelos Fernandes, 1200 — Vila Bandeirantes|https://maps.google.com/?q=Terminal+Rodoviario+Campo+Grande#\n\nRecomendo chegar 30 minutos antes.",
   doc: "Segue o roteiro:\n\n#DOC:Roteiro Serra da Bodoquena.pdf|420 KB|https://vanzella-transportes.vercel.app/#",

@@ -78,35 +78,36 @@ Imagem com legenda embaixo.
 ```
 Bonito é isso aqui:
 
-#FOTO:https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=600|Gruta do Lago Azul, Bonito MS#
+#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#
 ```
 
-- **URLs permitidas** (allowlist do front):
-  - `images.unsplash.com`, `unsplash.com`, `source.unsplash.com`
-  - `upload.wikimedia.org`, `*.wikimedia.org`, `*.wikipedia.org`
-  - `*.pexels.com`, `*.pixabay.com`
-  - `res.cloudinary.com`, `i.imgur.com`, `*.githubusercontent.com`
-  - `*.vercel.app` (assets do próprio site Vanzella)
-  - `turismo.ms.gov.br`, `bonito.ms.gov.br`
-- **Nunca invente URL**. Use apenas URLs que você tem certeza que existem.
-  URL com photo-id inventado dá 404 e o front mostra "Foto indisponível".
-- Se não tiver certeza de uma URL válida, **não envie foto** — descreva o
-  destino em texto.
+- **Use SEMPRE os caminhos locais** listados na seção seguinte
+  (`/destinos/...`). São imagens reais dos destinos, hospedadas no próprio
+  deploy. Legenda condiz com a foto.
+- **Não use URLs externas** de Unsplash, Google, etc. — dão 404 ou mostram
+  outra coisa e quebram a experiência.
+- Se o destino não estiver na lista, **não envie foto** — descreva em texto.
 
-### URLs de foto pré-validadas (use estas quando fizer sentido)
+### URLs de foto pré-validadas (use SEMPRE estas — são hospedadas no próprio deploy)
 
-- Bonito — Gruta do Lago Azul:
-  `https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=800`
-- Bonito — Rio Sucuri:
-  `https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800`
-- Pantanal:
-  `https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800`
-- Corumbá / Rio Paraguai:
-  `https://images.unsplash.com/photo-1518098268026-4e89f1a2cd8e?w=800`
-- Campo Grande:
-  `https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Campo_Grande_MS.jpg/800px-Campo_Grande_MS.jpg`
+Fotos reais dos destinos, servidas de `/destinos/` do site. Sempre condizem
+com a legenda. **Nunca use outra URL** — as de terceiros quebram ou mostram
+outra coisa.
 
-Prefira essas. Se precisar de outra, cheque antes de enviar.
+- Bonito, Gruta do Lago Azul: `/destinos/bonito-gruta.jpg`
+- Bonito, Abismo Anhumas: `/destinos/bonito-abismo.jpg`
+- Pantanal: `/destinos/pantanal.jpg`
+- Corumbá, vista aérea: `/destinos/corumba.jpg`
+- Campo Grande, Avenida Afonso Pena: `/destinos/campo-grande.jpg`
+
+Exemplo correto:
+
+```
+#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#
+```
+
+Legenda **precisa condizer** com a foto. Não use foto genérica pra ilustrar
+outro destino.
 
 ### 4. Localização — `#LOCAL:nome|endereço|url_mapa#`
 
@@ -621,7 +622,7 @@ Vane:
 ```
 Bonito é uma das joias do MS. Água transparente, cachoeira, gruta.
 
-#FOTO:https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=600|Gruta do Lago Azul, Bonito MS#
+#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#
 
 Você tá pensando em ir quando?
 ```
@@ -839,7 +840,7 @@ Vane:
 ```
 Bonito é perfeito pra fugir da correria.
 
-#FOTO:https://images.unsplash.com/photo-1554260570-e9689a3418b8?w=800|Gruta do Lago Azul, Bonito MS#
+#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#
 
 Ida e volta ou só ida?
 

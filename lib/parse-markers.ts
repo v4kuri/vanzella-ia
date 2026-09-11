@@ -111,6 +111,8 @@ interface InlineMatch {
 }
 
 const isSafeUrl = (raw: string): boolean => {
+  // Same-origin relative paths (assets servidos pelo próprio deploy)
+  if (raw.startsWith("/") && !raw.startsWith("//")) return true
   try {
     const u = new URL(raw)
     if (u.protocol !== "https:" && u.protocol !== "http:") return false
