@@ -77,6 +77,9 @@ export function MessageBubble({
     </span>
   )
 
+  const bubbleBg = isMe ? "bg-[#d9fdd3]" : "bg-white"
+  const hasLinks = links.length > 0
+
   return (
     <div
       className={`flex w-full flex-col ${
@@ -84,9 +87,9 @@ export function MessageBubble({
       } gap-1`}
     >
       <div
-        className={`relative max-w-[85%] rounded-lg shadow-sm ${
-          isMe ? "rounded-tr-none bg-[#d9fdd3]" : "rounded-tl-none bg-white"
-        } ${onlyMedia ? "p-1" : ""}`}
+        className={`relative max-w-[85%] overflow-hidden rounded-lg shadow-sm ${
+          isMe ? "rounded-tr-none" : "rounded-tl-none"
+        } ${bubbleBg}`}
       >
         <span
           aria-hidden="true"
@@ -97,7 +100,7 @@ export function MessageBubble({
           }`}
         />
 
-        <div className={onlyMedia ? "" : "px-2 py-1.5"}>
+        <div className={onlyMedia ? "p-1" : "px-2 py-1.5"}>
           {blocks.map((block, i) =>
             renderBlock(block, i, {
               messageId: message.id,
@@ -108,42 +111,53 @@ export function MessageBubble({
             })
           )}
 
-          {links.length > 0 && (
-            <div className="mt-1.5 flex flex-col gap-1">
+          {!onlyMedia && !hasLinks && (
+            <div className="mt-0.5 flex justify-end pr-0.5">{timeBadge}</div>
+          )}
+        </div>
+
+        {hasLinks && (
+          <>
+            {!onlyMedia && (
+              <div className="flex justify-end px-2 pb-1 pr-2.5">
+                {timeBadge}
+              </div>
+            )}
+            <div className="flex flex-col">
               {links.map((link, i) => (
                 <a
                   key={i}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 rounded-md border border-[#e9edef] bg-[#f0f2f5] px-3 py-2 text-[13.5px] font-medium text-[#0b7ec7] transition-colors hover:bg-[#e6ebef]"
+                  className={`flex items-center justify-center gap-2 border-t px-3 py-2.5 text-[14px] font-medium text-[#027eb5] transition-colors ${
+                    isMe
+                      ? "border-[#b6ebb0] hover:bg-[#c9f4c1]"
+                      : "border-[#e9edef] hover:bg-[#f4f7f8]"
+                  }`}
                 >
-                  <ExternalLink className="h-3.5 w-3.5" />
+                  <ExternalLink className="h-4 w-4" />
                   {link.label}
                 </a>
               ))}
             </div>
-          )}
-
-          {!onlyMedia && (
-            <div className="mt-0.5 flex justify-end pr-0.5">{timeBadge}</div>
-          )}
-
-          {onlyMedia && !hasMedia && (
-            <div className="mt-0.5 flex justify-end pr-0.5">{timeBadge}</div>
-          )}
-        </div>
+          </>
+        )}
       </div>
 
       {quickReplies.length > 0 && !isMe && (
-        <div className="flex max-w-[85%] flex-wrap gap-1.5" role="group" aria-label="Respostas rápidas">
+        <div
+          className="flex w-full max-w-[85%] flex-col gap-1"
+          role="group"
+          aria-label="Respostas rápidas"
+        >
           {quickReplies.map((opt, i) => (
             <button
               key={i}
               type="button"
               onClick={() => onQuickReply?.(opt)}
               aria-label={`Responder: ${opt}`}
-              className="rounded-full border border-[#dfe5e7] bg-white px-3 py-1.5 text-[13px] font-medium text-[#0b7ec7] shadow-sm transition-colors hover:bg-[#f0f7fb] active:bg-[#e2eff7]"
+              className="w-full rounded-lg border border-[#e9edef] bg-white px-4 py-2 text-center text-[14px] font-medium text-[#027eb5] shadow-sm transition-colors hover:bg-[#f4f7f8] active:bg-[#e9edef]"
             >
               {opt}
             </button>
