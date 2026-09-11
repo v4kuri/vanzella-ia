@@ -4,7 +4,7 @@ const N8N_WEBHOOK_URL =
   process.env.N8N_WEBHOOK_URL ??
   "https://automacao.v4kuri.com.br/webhook/a2a18084-89e1-4ca4-b2f8-f611b0a598f2/chat"
 
-const N8N_TIMEOUT_MS = Number(process.env.N8N_TIMEOUT_MS ?? "25000")
+const N8N_TIMEOUT_MS = Number(process.env.N8N_TIMEOUT_MS ?? "300000")
 
 const DEMOS: Record<string, string> = {
   saudacao:

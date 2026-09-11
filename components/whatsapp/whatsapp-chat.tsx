@@ -16,7 +16,7 @@ const SESSION_KEY = "vanzella-ia:session"
 const TYPING_MIN_MS = 700
 const TYPING_MS_PER_CHAR = 18
 const TYPING_MAX_MS = 3200
-const REQUEST_TIMEOUT_MS = 30000
+const REQUEST_TIMEOUT_MS = 300000
 
 function nowTime() {
   return new Date().toLocaleTimeString("pt-BR", {
