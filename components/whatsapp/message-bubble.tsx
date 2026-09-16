@@ -245,36 +245,28 @@ function TextView({ text }: { text: string }) {
 
 function CardView({ card }: { card: CardBlock }) {
   return (
-    <div className="mb-1 overflow-hidden rounded-md border border-[#e9edef] bg-[#fbfaf7]">
-      <div className="bg-[#f0f7f2] px-3 py-2">
-        <p className="text-[13.5px] font-semibold leading-tight text-[#111b21]">
+    <div className="-mx-1 -mt-1 mb-0.5 flex flex-col">
+      <div className="px-1 pb-1">
+        <p className="text-[15px] font-bold leading-tight text-[#111b21]">
           {card.title}
         </p>
         {card.subtitle && (
-          <p className="mt-0.5 text-[12px] leading-tight text-[#54656f]">
+          <p className="mt-0.5 text-[13px] leading-tight text-[#54656f]">
             {card.subtitle}
           </p>
         )}
+        <div className="mt-1 flex flex-col gap-0.5">
+          {card.lines.map((line, i) => (
+            <p key={i} className="text-[14px] leading-snug text-[#111b21]">
+              <FormattedText segments={formatWhatsAppText(line)} />
+            </p>
+          ))}
+        </div>
       </div>
-      <div className="flex flex-col gap-0.5 px-3 py-2">
-        {card.lines.map((line, i) => (
-          <p key={i} className="text-[13px] leading-snug text-[#3b4a54]">
-            <FormattedText segments={formatWhatsAppText(line)} />
-          </p>
-        ))}
-      </div>
-      <a
-        href={card.buttonUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="flex items-center justify-center gap-1.5 border-t border-[#e9edef] bg-white px-3 py-2 text-[13.5px] font-medium text-[#0b7ec7] transition-colors hover:bg-[#f0f7fb]"
-      >
-        <ExternalLink className="h-3.5 w-3.5" />
-        {card.buttonLabel}
-      </a>
     </div>
   )
 }
+
 
 function PhotoView({
   photo,

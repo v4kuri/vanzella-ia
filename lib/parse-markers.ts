@@ -275,6 +275,14 @@ export function parseMarkers(raw: string): ParsedMessage {
     blocks.push({ kind: "text", text: "" })
   }
 
+  // CARD's action button is promoted to bubble-level link (WhatsApp
+  // Business template layout puts all action buttons at the bubble base)
+  for (const b of blocks) {
+    if (b.kind === "card") {
+      links.push({ kind: "link", label: b.buttonLabel, url: b.buttonUrl })
+    }
+  }
+
   const hasRichContent =
     links.length > 0 ||
     quickReplies.length > 0 ||

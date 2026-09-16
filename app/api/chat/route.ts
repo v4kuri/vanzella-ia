@@ -9,7 +9,7 @@ const N8N_TIMEOUT_MS = Number(process.env.N8N_TIMEOUT_MS ?? "300000")
 const DEMOS: Record<string, string> = {
   saudacao:
     "Oi! Eu sou a Vane, da Vanzella. Como posso te ajudar?\n\n#BOTOES:Comprar passagem|Fretamento / grupo|Enviar encomenda#",
-  card: "Encontrei essa saída pra vocês:\n\n#CARD:Campo Grande → Bonito|Segunda, 15 de setembro|Saída *10:00*;2 passageiros;A partir de *R$ 149* por pessoa|Escolher poltronas|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1000-2026-09-15/poltronas?passageiros=2&morador=0#\n\nSe quiser um horário mais tarde, me fala.",
+  card: "Encontrei essa saída pra vocês:\n\n#CARD:Campo Grande → Bonito|Segunda, 15 de setembro|Saída *10:00*;2 passageiros;A partir de *R$ 149* por pessoa|Avançar pro checkout|https://vanzella-transportes.vercel.app/checkout?tripId=cgr-bon-1000-2026-09-15&passageiros=2&morador=0#\n\nSe quiser um horário mais tarde, me fala.",
   foto: "Bonito é uma das joias do MS. Água transparente, cachoeira, gruta.\n\n#FOTO:/destinos/bonito-gruta.jpg|Gruta do Lago Azul, Bonito MS#\n\nVocê tá pensando em ir quando?",
   local:
     "O embarque é aqui:\n\n#LOCAL:Terminal Rodoviário de Campo Grande|Rua Vasconcelos Fernandes, 1200 — Vila Bandeirantes|https://maps.google.com/?q=Terminal+Rodoviario+Campo+Grande#\n\nRecomendo chegar 30 minutos antes.",
@@ -24,7 +24,7 @@ const DEMOS: Record<string, string> = {
   audio:
     "Bonito é um dos destinos mais especiais do Brasil. Aquário natural, gruta com estalactites de milhões de anos, cachoeiras cristalinas em plena Serra da Bodoquena. Vale muito a experiência. A rota de Campo Grande até Bonito leva umas cinco horas, saída de manhã cedo faz sentido pra quem quer aproveitar já a tarde por lá.",
   split:
-    "Separei duas opções pra vocês.\n#SPLIT#\n#CARD:Campo Grande → Bonito|Manhã|Saída *10:00*;2 passageiros;A partir de *R$ 149*|Escolher|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1000-2026-09-15/poltronas?passageiros=2&morador=0#\n#SPLIT#\n#CARD:Campo Grande → Bonito|Tarde|Saída *15:00*;2 passageiros;A partir de *R$ 149*|Escolher|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1500-2026-09-15/poltronas?passageiros=2&morador=0#\n#SPLIT#\nQual funciona melhor?",
+    "Separei duas opções pra vocês.\n#SPLIT#\n#CARD:Campo Grande → Bonito|Manhã|Saída *10:00*;2 passageiros;A partir de *R$ 149*|Avançar|https://vanzella-transportes.vercel.app/checkout?tripId=cgr-bon-1000-2026-09-15&passageiros=2&morador=0#\n#SPLIT#\n#CARD:Campo Grande → Bonito|Tarde|Saída *15:00*;2 passageiros;A partir de *R$ 149*|Avançar|https://vanzella-transportes.vercel.app/checkout?tripId=cgr-bon-1500-2026-09-15&passageiros=2&morador=0#\n#SPLIT#\nQual funciona melhor?",
 }
 
 function demoResponse(input: string): string | null {
