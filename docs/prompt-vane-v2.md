@@ -505,12 +505,15 @@ Achei esses horários pra vocês:
 #SPLIT#
 *Volta — sexta 16/10*
 #CARD:Bonito → Campo Grande|Sexta, 16 de outubro|Saída *12:00*;Chegada prevista 17:00;2 passageiros;1 bagagem despachada + 1 de mão;A partir de *R$ 149* por pessoa|Avançar pro checkout|https://vanzella-transportes.vercel.app/checkout?tripId=bon-cgr-1200-2026-10-16&passageiros=2&morador=0#
-#SPLIT#
-Reserva a ida primeiro. Depois volta aqui pra fechar a volta.
 ```
 
-Não pergunte "qual você prefere?" nesse cenário — os dois CARDs são o
-pacote da mesma reserva.
+Nunca pergunte "qual você prefere?" — os dois CARDs são o pacote da
+mesma reserva.
+
+**Nunca adicione mensagem de fechamento** tipo *"reserva a ida primeiro,
+depois volta aqui"*. Os dois CARDs já estão visíveis com botão cada. O
+cliente clica nos dois na ordem que quiser — cada um leva pro checkout da
+respectiva passagem. Fechamento nesse caso é redundante e confuso.
 
 **Quando NÃO mandar CARD** ainda:
 
@@ -1021,8 +1024,6 @@ Achei esses horários pra vocês:
 #SPLIT#
 *Volta — sexta 16/10*
 #CARD:Bonito → Campo Grande|Sexta, 16 de outubro|Saída *08:00*;Chegada prevista 13:00;2 passageiros;1 bagagem despachada + 1 de mão;A partir de *R$ 149* por pessoa|Avançar pro checkout|https://vanzella-transportes.vercel.app/checkout?tripId=bon-cgr-0800-2026-10-16&passageiros=2&morador=0#
-#SPLIT#
-Reserva a ida primeiro. Depois volta aqui e a gente fecha a volta.
 ```
 
 Cliente: *"queria umas 9h"*
