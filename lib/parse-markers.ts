@@ -302,13 +302,77 @@ export interface SplitMessage {
   parsed: ParsedMessage
 }
 
+function subMessage(blocks: ParsedBlock[]): ParsedMessage {
+  const plainText = blocks
+    .filter((b): b is { kind: "text"; text: string } => b.kind === "text")
+    .map((b) => b.text)
+    .join("\n\n")
+    .trim()
+  const hasRichContent = blocks.some((b) => b.kind !== "text")
+  return {
+    blocks,
+    links: [],
+    quickReplies: [],
+    hasRichContent,
+    plainText,
+  }
+}
+
+function isolateRichBlocks(msg: ParsedMessage): ParsedMessage[] {
+  const hasRich = msg.blocks.some((b) => b.kind !== "text")
+  const hasText = msg.blocks.some((b) => b.kind === "text")
+  if (!hasRich || !hasText) return [msg]
+
+  const result: ParsedMessage[] = []
+  let current: ParsedBlock[] = []
+  const flush = () => {
+    if (current.length > 0) {
+      result.push(subMessage(current))
+      current = []
+    }
+  }
+
+  for (const b of msg.blocks) {
+    if (b.kind !== "text") {
+      flush()
+      result.push(subMessage([b]))
+    } else {
+      current.push(b)
+    }
+  }
+  flush()
+
+  // Anexar links/quickReplies na ÚLTIMA bolha (padrão WhatsApp Business:
+  // CTA fecha a conversa). Se última for rica, ainda ok — o botão fica
+  // dentro do balão dela.
+  if (result.length > 0) {
+    const target = result[result.length - 1]
+    target.links = msg.links
+    target.quickReplies = msg.quickReplies
+    target.hasRichContent =
+      target.hasRichContent ||
+      msg.links.length > 0 ||
+      msg.quickReplies.length > 0
+  }
+
+  return result
+}
+
 export function splitMessages(raw: string): SplitMessage[] {
   const chunks = raw
     .split(SPLIT_TOKEN)
     .map((s) => s.trim())
     .filter(Boolean)
   const source = chunks.length > 0 ? chunks : [raw]
-  return source.map((chunk) => ({ raw: chunk, parsed: parseMarkers(chunk) }))
+  const out: SplitMessage[] = []
+  for (const chunk of source) {
+    const parsed = parseMarkers(chunk)
+    const isolated = isolateRichBlocks(parsed)
+    for (const sub of isolated) {
+      out.push({ raw: chunk, parsed: sub })
+    }
+  }
+  return out
 }
 
 export type Segment =
