@@ -13,10 +13,10 @@ import { AudioBubble } from "./audio-bubble"
 import { splitMessages } from "@/lib/parse-markers"
 
 const AUDIO_THRESHOLD = Number(
-  process.env.NEXT_PUBLIC_AUDIO_THRESHOLD_CHARS ?? "180"
+  process.env.NEXT_PUBLIC_AUDIO_THRESHOLD_CHARS ?? "100"
 )
-const AUDIO_MIN_CHARS = 30
-const AUDIO_EVERY_N = 3
+const AUDIO_MIN_CHARS = 20
+const AUDIO_EVERY_N = 2
 
 const STORAGE_KEY = "vanzella-ia:chat:v2"
 const SESSION_KEY = "vanzella-ia:session:v2"
