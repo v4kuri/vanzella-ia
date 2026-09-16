@@ -18,8 +18,8 @@ const AUDIO_THRESHOLD = Number(
 const AUDIO_MIN_CHARS = 30
 const AUDIO_EVERY_N = 3
 
-const STORAGE_KEY = "vanzella-ia:chat"
-const SESSION_KEY = "vanzella-ia:session"
+const STORAGE_KEY = "vanzella-ia:chat:v2"
+const SESSION_KEY = "vanzella-ia:session:v2"
 const TYPING_MIN_MS = 700
 const TYPING_MS_PER_CHAR = 18
 const TYPING_MAX_MS = 3200
