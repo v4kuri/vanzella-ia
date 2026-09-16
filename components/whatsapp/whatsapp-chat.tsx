@@ -15,6 +15,8 @@ import { splitMessages } from "@/lib/parse-markers"
 const AUDIO_THRESHOLD = Number(
   process.env.NEXT_PUBLIC_AUDIO_THRESHOLD_CHARS ?? "180"
 )
+const AUDIO_MIN_CHARS = 30
+const AUDIO_EVERY_N = 3
 
 const STORAGE_KEY = "vanzella-ia:chat"
 const SESSION_KEY = "vanzella-ia:session"
@@ -90,6 +92,7 @@ export function WhatsAppChat() {
   const sessionIdRef = useRef<string>("")
   const scrollRef = useRef<HTMLDivElement>(null)
   const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set())
+  const audioEligibleCountRef = useRef<number>(0)
 
   useEffect(() => {
     sessionIdRef.current = readSession()
@@ -140,9 +143,22 @@ export function WhatsAppChat() {
         const delay = computeTypingDelay(chunk.raw)
         setIsTyping(true)
         scheduleTimer(() => {
-          const eligibleForAudio =
-            !chunk.parsed.hasRichContent &&
-            chunk.parsed.plainText.length >= AUDIO_THRESHOLD
+          const textLen = chunk.parsed.plainText.length
+          const isEligibleShape =
+            !chunk.parsed.hasRichContent && textLen >= AUDIO_MIN_CHARS
+          let eligibleForAudio = false
+          if (isEligibleShape) {
+            if (textLen >= AUDIO_THRESHOLD) {
+              eligibleForAudio = true
+              audioEligibleCountRef.current = 0
+            } else {
+              audioEligibleCountRef.current += 1
+              if (audioEligibleCountRef.current >= AUDIO_EVERY_N) {
+                eligibleForAudio = true
+                audioEligibleCountRef.current = 0
+              }
+            }
+          }
           const reply: ChatMessage = {
             id: newId(),
             text: chunk.raw,
@@ -175,6 +191,7 @@ export function WhatsAppChat() {
   const handleReset = useCallback(() => {
     timersRef.current.forEach((t) => clearTimeout(t))
     timersRef.current.clear()
+    audioEligibleCountRef.current = 0
     setMessages([])
     setActiveQuickRepliesId(null)
     setIsTyping(false)
