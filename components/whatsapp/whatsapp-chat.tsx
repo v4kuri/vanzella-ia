@@ -9,7 +9,12 @@ import {
   TypingBubble,
   type ChatMessage,
 } from "./message-bubble"
+import { AudioBubble } from "./audio-bubble"
 import { splitMessages } from "@/lib/parse-markers"
+
+const AUDIO_THRESHOLD = Number(
+  process.env.NEXT_PUBLIC_AUDIO_THRESHOLD_CHARS ?? "180"
+)
 
 const STORAGE_KEY = "vanzella-ia:chat"
 const SESSION_KEY = "vanzella-ia:session"
@@ -61,7 +66,8 @@ function readMessages(): ChatMessage[] {
 function persistMessages(messages: ChatMessage[]) {
   if (typeof window === "undefined") return
   try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+    const safe = messages.map((m) => ({ ...m, cachedAudioUrl: null }))
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(safe))
   } catch {
     // storage full or blocked — ignore
   }
@@ -134,6 +140,9 @@ export function WhatsAppChat() {
         const delay = computeTypingDelay(chunk.raw)
         setIsTyping(true)
         scheduleTimer(() => {
+          const eligibleForAudio =
+            !chunk.parsed.hasRichContent &&
+            chunk.parsed.plainText.length >= AUDIO_THRESHOLD
           const reply: ChatMessage = {
             id: newId(),
             text: chunk.raw,
@@ -143,6 +152,9 @@ export function WhatsAppChat() {
             links: chunk.parsed.links,
             quickReplies: chunk.parsed.quickReplies,
             pollVote: null,
+            variant: eligibleForAudio ? "voice" : "message",
+            voiceText: eligibleForAudio ? chunk.parsed.plainText : undefined,
+            cachedAudioUrl: null,
           }
           setMessages((prev) => [...prev, reply])
           if (chunk.parsed.quickReplies.length > 0) {
@@ -303,6 +315,39 @@ export function WhatsAppChat() {
             const bubbleMessage = showQuickReplies
               ? message
               : { ...message, quickReplies: [] }
+            if (
+              message.variant === "voice" &&
+              message.voiceText &&
+              message.sender === "them"
+            ) {
+              return (
+                <div key={message.id} className="flex w-full justify-start">
+                  <AudioBubble
+                    messageId={message.id}
+                    text={message.voiceText}
+                    time={message.time}
+                    isMe={false}
+                    cachedAudioUrl={message.cachedAudioUrl ?? null}
+                    onCacheAudio={(id, url) => {
+                      setMessages((prev) =>
+                        prev.map((m) =>
+                          m.id === id ? { ...m, cachedAudioUrl: url } : m
+                        )
+                      )
+                    }}
+                    onFail={(id) => {
+                      setMessages((prev) =>
+                        prev.map((m) =>
+                          m.id === id
+                            ? { ...m, variant: "message", voiceText: undefined }
+                            : m
+                        )
+                      )
+                    }}
+                  />
+                </div>
+              )
+            }
             return (
               <MessageBubble
                 key={message.id}

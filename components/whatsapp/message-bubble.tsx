@@ -35,6 +35,9 @@ export interface ChatMessage {
   links?: LinkAction[]
   quickReplies?: string[]
   pollVote?: string | null
+  variant?: "message" | "voice"
+  voiceText?: string
+  cachedAudioUrl?: string | null
 }
 
 interface MessageBubbleProps {

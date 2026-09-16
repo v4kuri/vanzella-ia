@@ -59,6 +59,8 @@ export interface ParsedMessage {
   blocks: ParsedBlock[]
   links: LinkAction[]
   quickReplies: string[]
+  hasRichContent: boolean
+  plainText: string
 }
 
 const SPLIT_TOKEN = "#SPLIT#"
@@ -273,7 +275,18 @@ export function parseMarkers(raw: string): ParsedMessage {
     blocks.push({ kind: "text", text: "" })
   }
 
-  return { blocks, links, quickReplies }
+  const hasRichContent =
+    links.length > 0 ||
+    quickReplies.length > 0 ||
+    blocks.some((b) => b.kind !== "text")
+
+  const plainText = blocks
+    .filter((b): b is { kind: "text"; text: string } => b.kind === "text")
+    .map((b) => b.text)
+    .join("\n\n")
+    .trim()
+
+  return { blocks, links, quickReplies, hasRichContent, plainText }
 }
 
 export interface SplitMessage {

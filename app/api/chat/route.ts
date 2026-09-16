@@ -21,6 +21,8 @@ const DEMOS: Record<string, string> = {
   link: "Você consegue rastrear direto por aqui:\n\n#LINK:Rastrear encomenda|https://vanzella-transportes.vercel.app/carga/rastreio#",
   formatacao:
     "Formatação: *negrito*, _itálico_, ~riscado~ e `mono`.\n\nUse com parcimônia.",
+  audio:
+    "Bonito é um dos destinos mais especiais do Brasil. Aquário natural, gruta com estalactites de milhões de anos, cachoeiras cristalinas em plena Serra da Bodoquena. Vale muito a experiência. A rota de Campo Grande até Bonito leva umas cinco horas, saída de manhã cedo faz sentido pra quem quer aproveitar já a tarde por lá.",
   split:
     "Separei duas opções pra vocês.\n#SPLIT#\n#CARD:Campo Grande → Bonito|Manhã|Saída *10:00*;2 passageiros;A partir de *R$ 149*|Escolher|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1000-2026-09-15/poltronas?passageiros=2&morador=0#\n#SPLIT#\n#CARD:Campo Grande → Bonito|Tarde|Saída *15:00*;2 passageiros;A partir de *R$ 149*|Escolher|https://vanzella-transportes.vercel.app/passagens/cgr-bon-1500-2026-09-15/poltronas?passageiros=2&morador=0#\n#SPLIT#\nQual funciona melhor?",
 }
