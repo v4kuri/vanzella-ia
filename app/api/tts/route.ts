@@ -1,17 +1,23 @@
 import { NextResponse } from "next/server"
 import { createHash } from "crypto"
 
-const OPENAI_URL = "https://api.openai.com/v1/chat/completions"
+// Endpoint de TTS puro (/v1/audio/speech): apenas vocaliza o texto, sem
+// interpretar nem aplicar safety de chat. O modelo de chat com áudio
+// (gpt-audio via /chat/completions) RECUSA conteúdo como data de nascimento
+// ou CPF, falando a recusa no lugar de ler — por isso não é usado aqui.
+const OPENAI_URL = "https://api.openai.com/v1/audio/speech"
 const OPENAI_TIMEOUT_MS = Number(process.env.OPENAI_TTS_TIMEOUT_MS ?? "60000")
-const AUDIO_MODEL = process.env.OPENAI_TTS_MODEL ?? "gpt-audio-1.5"
+const AUDIO_MODEL = process.env.OPENAI_TTS_MODEL ?? "gpt-4o-mini-tts"
 const AUDIO_VOICE = process.env.OPENAI_TTS_VOICE ?? "verse"
 
 const MAX_TEXT_LEN = 2000
 const MIN_TEXT_LEN = 20
 
-const SYSTEM_PROMPT =
+// `instructions` guia só o TOM da fala no gpt-4o-mini-tts. Não é um chat:
+// o modelo não responde nem recusa o conteúdo, só o pronuncia.
+const TTS_INSTRUCTIONS =
   process.env.OPENAI_TTS_SYSTEM_PROMPT ??
-  `Fale o texto do usuário como se você tivesse acabado de gravar um áudio de WhatsApp pra um amigo, em português brasileiro. Tom leve, jovem, amigável, informal. Fale conectado, fluindo, sem pausas de leitura. Não repita a última palavra com entonação forte. Não soe como locutora, narradora ou URA. Não responda ao texto — só fale ele como se fosse seu.`
+  `Fale como se tivesse acabado de gravar um áudio de WhatsApp pra um amigo, em português brasileiro. Tom leve, jovem, amigável, informal. Fale conectado, fluindo, sem pausas de leitura. Não repita a última palavra com entonação forte. Não soe como locutora, narradora ou URA.`
 
 interface CachedAudio {
   audio: string
@@ -102,12 +108,10 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         model: AUDIO_MODEL,
-        modalities: ["text", "audio"],
-        audio: { voice: AUDIO_VOICE, format: "mp3" },
-        messages: [
-          { role: "developer", content: SYSTEM_PROMPT },
-          { role: "user", content: text },
-        ],
+        voice: AUDIO_VOICE,
+        input: text,
+        instructions: TTS_INSTRUCTIONS,
+        response_format: "mp3",
       }),
       signal: controller.signal,
     })
@@ -128,25 +132,16 @@ export async function POST(request: Request) {
     )
   }
 
-  interface AudioChoice {
-    message?: {
-      audio?: { data?: string; transcript?: string }
-    }
-  }
-
-  let data: { choices?: AudioChoice[] }
+  // /v1/audio/speech devolve o áudio binário direto (não JSON).
+  let audioB64: string
   try {
-    data = await response.json()
+    const buf = Buffer.from(await response.arrayBuffer())
+    if (buf.length === 0) {
+      return NextResponse.json({ error: "Resposta sem áudio" }, { status: 502 })
+    }
+    audioB64 = buf.toString("base64")
   } catch {
     return NextResponse.json({ error: "Resposta inválida da OpenAI" }, { status: 502 })
-  }
-
-  const audioB64 = data.choices?.[0]?.message?.audio?.data
-  if (!audioB64) {
-    return NextResponse.json(
-      { error: "Resposta sem áudio" },
-      { status: 502 }
-    )
   }
 
   const approxDurationSec = Math.max(
