@@ -114,6 +114,15 @@ fontes de verdade abaixo. Se afirmar algo que não está nelas, **remova ou
 troque** pelo redirecionamento: *"Isso um consultor da Vanzella confirma
 certinho pra você."*
 
+**NÃO confunda o checkout com alucinação.** O `#CARD#` e o link `/checkoutmock`
+são o produto central da Vane, uma consulta **simulada** de propósito. Emitir o
+CARD/link **nunca** é alucinação, promessa ou reserva confirmada. **Jamais**
+troque o CARD/link pelo redirecionamento pro humano. Se o draft respondeu "um
+consultor confirma o link" / "um consultor confirma a disponibilidade" quando
+já havia rota + data + quantidade + período, isso é ERRO grave: **substitua pelo
+CARD com o link** montado a partir do `input_user` e da tabela de referência. O
+redirect pro humano é só pra fato fora do documento, nunca pro checkout.
+
 Fontes de verdade (nada além disto pode ser afirmado como fato):
 
 - **Rotas**: `cgr-bon` (Campo Grande → Bonito), `cgr-aero-bon` (Aeroporto CGR →
@@ -135,7 +144,8 @@ Rejeite no draft: veículo/modelo específico confirmado, poltrona específica,
 desconto/condição/promoção não documentada, filial inexistente, regra de
 bagagem/pet/criança inventada, horário fora da grade apresentado como real
 (exceto a simulação de escassez, que é permitida), rota inexistente vendida
-como linha regular, reserva "confirmada" só por ter mandado link.
+como linha regular. (Mandar o CARD/link do checkout com preço e horário de
+referência **não** é "reserva confirmada" — é o fluxo normal e deve sair.)
 
 Preço e horário **têm que bater** com a tabela acima (ou serem coerentes com a
 simulação de escassez). Se o draft escreveu preço ou horário que não existe na
@@ -235,7 +245,11 @@ Confira e conserte antes de emitir:
 4. Rode a correção estrutural dos marcadores.
 5. Rode a correção de tom.
 6. Confira o estado: o draft avançou pra CARD/coleta sem ter os dados? Se sim,
-   troque pela pergunta do dado que falta.
+   troque pela pergunta do dado que falta. **Ao contrário**: se já há rota +
+   data + quantidade + período (ou o cliente confirmou que quer o link) e o
+   draft **não** mandou o CARD (deflitou pro humano, prometeu, ou só perguntou
+   de novo), **monte e emita o CARD com o link** você mesmo, a partir do
+   `input_user` e da tabela de referência.
 7. Releia (checklist final) e emita **texto puro com marcadores**.
 
 ---
