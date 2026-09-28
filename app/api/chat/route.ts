@@ -1,10 +1,13 @@
+// Proxy do chat VANZELLA: encaminha texto ao webhook n8n vanzella-ia-preview
+// e devolve pra UI o texto puro que a Vane gerou.
 import { NextResponse } from "next/server"
+
+export const maxDuration = 300
+export const dynamic = "force-dynamic"
 
 const N8N_WEBHOOK_URL =
   process.env.N8N_WEBHOOK_URL ??
-  "https://automacao.v4kuri.com.br/webhook/a2a18084-89e1-4ca4-b2f8-f611b0a598f2/chat"
-
-const N8N_TIMEOUT_MS = Number(process.env.N8N_TIMEOUT_MS ?? "300000")
+  "https://automacao.v4kuri.com.br/webhook/vanzella-ia-preview"
 
 const DEMOS: Record<string, string> = {
   saudacao:
@@ -39,61 +42,95 @@ function demoResponse(input: string): string | null {
   return DEMOS[rest] ?? `Demo "${rest}" não existe. Use /demo help.`
 }
 
+function pickString(data: unknown): string {
+  if (typeof data === "string") return data
+  if (Array.isArray(data)) return pickString(data[0])
+  if (data && typeof data === "object") {
+    const obj = data as Record<string, unknown>
+    const candidates = [
+      obj.content,
+      obj.output,
+      obj.message,
+      obj.text,
+      obj.reply,
+      obj.body,
+      obj.answer,
+    ]
+    for (const c of candidates) {
+      const s = pickString(c)
+      if (s) return s
+    }
+  }
+  return ""
+}
+
 export async function POST(request: Request) {
   try {
-    const { message, sessionId } = await request.json()
+    const body = await request.json()
+    const content: string | undefined = body?.message ?? body?.content
+    const type: string = body?.type === "audio" ? "audio" : "text"
+    const sessionId: string = body?.sessionId || crypto.randomUUID()
 
-    if (!message || typeof message !== "string") {
+    if (!content || typeof content !== "string") {
       return NextResponse.json({ error: "Mensagem inválida" }, { status: 400 })
     }
 
-    const demo = demoResponse(message)
+    // DEMOS: /demo intercepta antes de bater no webhook.
+    const demo = demoResponse(content)
     if (demo !== null) {
       return NextResponse.json({ output: demo })
     }
 
-    const controller = new AbortController()
-    const timeout = setTimeout(() => controller.abort(), N8N_TIMEOUT_MS)
+    const url = new URL(N8N_WEBHOOK_URL)
+    url.searchParams.set("content", content)
+    url.searchParams.set("type", type)
+    url.searchParams.set("sessionId", sessionId)
 
-    let response: Response
-    try {
-      response = await fetch(N8N_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "sendMessage",
-          sessionId: sessionId || crypto.randomUUID(),
-          chatInput: message,
-        }),
-        signal: controller.signal,
-      })
-    } catch (err) {
-      clearTimeout(timeout)
-      const aborted = err instanceof DOMException && err.name === "AbortError"
-      return NextResponse.json(
-        {
-          error: aborted
-            ? "Tempo esgotado ao consultar o assistente"
-            : "Erro ao comunicar com o chatbot",
-        },
-        { status: 504 }
-      )
-    }
-    clearTimeout(timeout)
+    // Sem timeout: espera o n8n responder o quanto for necessário.
+    // A plataforma (Vercel) tem seu próprio limite via maxDuration.
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      headers: { Accept: "application/json" },
+      cache: "no-store",
+    })
+
+    const raw = await response.text()
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: "Erro ao comunicar com o chatbot" },
+        {
+          error: "Webhook n8n retornou erro",
+          upstream_status: response.status,
+          upstream_body: raw.slice(0, 2000),
+          debug: { method: "GET", target: url.toString() },
+        },
         { status: 502 }
       )
     }
 
-    const data = await response.json()
+    let picked = ""
+    try {
+      picked = pickString(JSON.parse(raw))
+    } catch {
+      picked = ""
+    }
+    if (!picked) picked = raw
+    const output = picked.trim()
 
-    return NextResponse.json({ output: data.output ?? "" })
-  } catch {
+    return NextResponse.json({
+      output,
+      upstream_status: response.status,
+      upstream_length: raw.length,
+      raw_debug:
+        raw.length <= 8000
+          ? raw
+          : `${raw.slice(0, 8000)}...(${raw.length - 8000} chars a mais)`,
+      _version: "route.chat.v6-direct",
+    })
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err)
     return NextResponse.json(
-      { error: "Erro interno no servidor" },
+      { error: "Erro ao comunicar com o chatbot", detail },
       { status: 500 }
     )
   }
