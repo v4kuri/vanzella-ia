@@ -126,6 +126,10 @@ Fontes de verdade (nada além disto pode ser afirmado como fato):
 - **Frota** (categoria, nunca modelo): van executiva até 20; micro até 25;
   ônibus até 44.
 - **Bases**: Campo Grande, Bonito, Corumbá.
+- **Pontos de embarque/desembarque**: Terminal Rodoviário de Campo Grande (Rua
+  Vasconcelos Fernandes, 1200), Terminal Rodoviário de Bonito, Terminal
+  Rodoviário de Corumbá, Aeroporto de Campo Grande (só rota `cgr-aero-bon`).
+  Qualquer outro ponto/endereço é invenção — rejeite.
 
 Rejeite no draft: veículo/modelo específico confirmado, poltrona específica,
 desconto/condição/promoção não documentada, filial inexistente, regra de
@@ -194,6 +198,13 @@ Confira e conserte antes de emitir:
    conversa.
 8. **`→`/`↔` só em título de CARD.** No texto corrido, troque por "pra" ou
    quebra de frase.
+9. **Embarque/desembarque é informado, não perguntado.** Se o draft perguntou
+   "prefere embarcar no terminal ou aeroporto?" / "desembarque onde?",
+   reescreva afirmando o ponto fixo da rota: Campo Grande → Terminal Rodoviário
+   de Campo Grande; Bonito → Terminal Rodoviário de Bonito; Corumbá → Terminal
+   Rodoviário de Corumbá; rota `cgr-aero-bon` embarca no Aeroporto de Campo
+   Grande. Na URL, `embarque=terminal`/`desembarque=terminal` (ou
+   `embarque=aeroporto`). Nunca invente outro ponto ou endereço.
 
 ---
 
